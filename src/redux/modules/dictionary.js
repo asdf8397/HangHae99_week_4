@@ -1,11 +1,11 @@
 //dictionary.js
 import {db} from "../../firebase";
 import {
-    collection,
     doc,
+    collection,
     getDocs,
     addDoc,
-
+    updateDoc,
 } from "firebase/firestore";
 
 // Actions
@@ -13,23 +13,27 @@ import {
 const LOAD = "dictionary/LOAD"; 
 const CREATE = "dictionary/CREATE";
 const LOADED = "dictionary/LOADED";
+const UPDATE = "dictionary/UPDATE";
 
 const initialState = {
-    is_loaded:false,
+    is_loaded : false,
     list : []
 
 };
 
 
 //Action Creators
-export function loadDictionary(dictionary_list) {
-    return { type: LOAD, dictionary_list };
-};
-  
 export function createDictionary(dictionary) {
-    console.log("액션을 생성할거야!");
     return { type: CREATE, dictionary: dictionary };
 };
+
+export function updateDictionary(dictionary_index) {
+    return { type : UPDATE, dictionary_index}
+};
+
+export function loadDictionary(dictionary_list) {
+    return { type: LOAD, dictionary_list };
+}; 
 
 export function isLoaded(loaded) {
   return { type: LOADED, loaded };
@@ -43,10 +47,10 @@ export const loadDictionaryFB = () => {
 
         let dictionary_list = [];
 
-        dictionary_data.forEach((b) => {
+        dictionary_data.forEach((d) => {
             
-            dictionary_list.push({id : b.id, ...b.data()});
-        });
+            dictionary_list.push({id : d.id, ...d.data()});
+        })
 
 
         dispatch(loadDictionary(dictionary_list));
@@ -59,14 +63,22 @@ export const addDictionaryFB = (dictionary) => {
         const docRef = await addDoc(collection(db,"week4"), dictionary);
         const dictionary_data = {id :docRef.id, ...dictionary}
 
-        dispatch(createDictionary(dictionary_data));
-    }
+        dispatch(createDictionary(dictionary_data))
+    };
+};
 
+export const updateDictionaryFB = (dictionary_id) => {
+    return async function (dispatch, getState) {
+        const docRef = doc(db, "week4", dictionary_id);
+        await updateDoc(docRef, { completed : true});
 
-}
-
-
-
+        const _dictionary_list = getState().dictionary_list;
+        const dictionary_index = _dictionary_list.findIndex((d) => {
+            return d.id === dictionary_id;
+        });
+        dispatch(updateDictionary(dictionary_index));
+    };
+};
 
 //reducer
 
@@ -79,11 +91,21 @@ export default function reducer(state = initialState, action = {}) {
             const new_dictionary_list = [...state.list, action.dictionary];
             return {...state, list: new_dictionary_list, is_Loaded:true};
         }
+        case "dictionary/UPDATE" : {
+            const new_dictionary_list = state.list.map((v, i) => {
+                if (parseInt(action.dictionary_index) === i){
+                    return {...v, completed: true};
+                }else{
+                    return v;
+                }
+            });
+            return {...state, list: new_dictionary_list};
+        };
         case "dictionary/LOADED": {
             return {...state, is_loaded :action.loaded};
         }
         default:
             return state;
 
-    }
-}
+    };
+};

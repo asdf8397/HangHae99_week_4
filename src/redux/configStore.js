@@ -1,6 +1,6 @@
 import { legacy_createStore as createStore,
 combineReducers,
-applyMiddleware, compose} from "redux";
+applyMiddleware} from "redux";
 import thunk from "redux-thunk";
 
 import dictionary from "./modules/dictionary";

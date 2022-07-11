@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {Route, Switch, useHistory} from "react-router-dom";
-
-
+import {Route, Switch} from "react-router-dom";
 
 import Dictionary from "./Dictionary";
 import Write from "./Write";
@@ -10,8 +8,6 @@ import Write from "./Write";
 
 
 function App() {
-
-  const history = useHistory();  
 
   return (
     <div className="App">
@@ -26,8 +22,8 @@ function App() {
         </Route>
       </Switch>
     </div>
-  );
-};
+  )
+}
 
 const Title = styled.h2`
 
