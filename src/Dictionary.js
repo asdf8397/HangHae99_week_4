@@ -73,7 +73,7 @@ const Cards = styled.div`
 
 width : 300px;
 height : 120px;
-border : 5px solid black;
+border : 2px solid black;
 border-radius : 7%;
 margin-top : 1px;
 padding : 5px 5px 5px 5px;
@@ -84,7 +84,7 @@ const CardList = styled.div`
 
 display : grid;
 grid-template-columns: 0.1fr 0.1fr 0.1fr 0.1fr;
-gap : 3px;
+gap : 5px;
 flex-direction : row;
 justify-content : center;
 
@@ -96,7 +96,7 @@ justify-content : center;
 const Word = styled.div`
 
 font-weight : bold;
-
+font-size : large;
 
 `
 const Sentance = styled.div`
