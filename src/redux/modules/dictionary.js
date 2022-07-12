@@ -17,7 +17,7 @@ const UPDATE = "dictionary/UPDATE";
 
 const initialState = {
     is_loaded : false,
-    list : []
+    list : [],
 
 };
 
@@ -36,14 +36,14 @@ export function loadDictionary(dictionary_list) {
 }; 
 
 export function isLoaded(loaded) {
-  return { type: LOADED, loaded };
+    return { type: LOADED, loaded };
 };
 
 //middleware
 
 export const loadDictionaryFB = () => {
     return async function (dispatch) {
-        const dictionary_data = await getDocs(collection(db,"week4"));
+        const dictionary_data = await getDocs(collection(db,"dictionary"));
 
         let dictionary_list = [];
 
@@ -60,25 +60,26 @@ export const loadDictionaryFB = () => {
 export const addDictionaryFB = (dictionary) => {
     return async function (dispatch) {
         dispatch(isLoaded(false));
-        const docRef = await addDoc(collection(db,"week4"), dictionary);
-        const dictionary_data = {id :docRef.id, ...dictionary}
+        const docRef = await addDoc(collection(db,"dictionary"), dictionary);
+        //const _dicitonary = await getDocs(docRef);
+        const dictionary_data = {id: docRef, ...dictionary}
 
         dispatch(createDictionary(dictionary_data))
     };
 };
 
-export const updateDictionaryFB = (dictionary_id) => {
-    return async function (dispatch, getState) {
-        const docRef = doc(db, "week4", dictionary_id);
-        await updateDoc(docRef, { completed : true});
+// export const updateDictionaryFB = (dictionary_id) => {
+//     return async function (dispatch, getState) {
+//         const docRef = doc(db, "dictionary", dictionary_id);
+//         await updateDoc(docRef, {completed : true});
 
-        const _dictionary_list = getState().dictionary_list;
-        const dictionary_index = _dictionary_list.findIndex((d) => {
-            return d.id === dictionary_id;
-        });
-        dispatch(updateDictionary(dictionary_index));
-    };
-};
+//         const _dictionary_list = getState().dictionary_list;
+//         const dictionary_index = _dictionary_list.findIndex((d) => {
+//             return d.id === dictionary_id;
+//         });
+//         dispatch(updateDictionary(dictionary_index));
+//     };
+// };
 
 //reducer
 
@@ -91,16 +92,16 @@ export default function reducer(state = initialState, action = {}) {
             const new_dictionary_list = [...state.list, action.dictionary];
             return {...state, list: new_dictionary_list, is_Loaded:true};
         }
-        case "dictionary/UPDATE" : {
-            const new_dictionary_list = state.list.map((v, i) => {
-                if (parseInt(action.dictionary_index) === i){
-                    return {...v, completed: true};
-                }else{
-                    return v;
-                }
-            });
-            return {...state, list: new_dictionary_list};
-        };
+        // case "dictionary/UPDATE" : {
+        //     const new_dictionary_list = state.list.map((l, idx) => {
+        //         if (parseInt(action.dictionary_index) === idx){
+        //             return {...l, completed: true};
+        //         }else{
+        //             return l;
+        //         }
+        //     });
+        //     return {...state, list: new_dictionary_list};
+        // };
         case "dictionary/LOADED": {
             return {...state, is_loaded :action.loaded};
         }

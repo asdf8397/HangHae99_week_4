@@ -6,18 +6,17 @@ import {faCheck} from "@fortawesome/free-solid-svg-icons";
 
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadDictionaryFB, updateDictionaryFB} from "./redux/modules/dictionary";
+import { loadDictionaryFB} from "./redux/modules/dictionary";
 
 
 
 const Dictionary = (props) => {
-    const history = useHistory();
     const params = useParams();
-    const index = useParams();
+    // const dictionary_index = params.index;
     const dispatch = useDispatch();
-    const dictionary_index = params.index;
+    const history = useHistory();
     const my_Dictionary_lists = useSelector((state) => state.dictionary.list);
-
+    // const dictionary_list = useSelector((state) => state.dictionary.list);
     React.useEffect(()=> {
         dispatch(loadDictionaryFB());
     }, []);
@@ -28,10 +27,10 @@ const Dictionary = (props) => {
         {my_Dictionary_lists.map((list, index)=> {
             return (
                 <Cards completed = {list.completed} key = {index}>
-                <FontAwesomeIcon icon={faCheck} style ={{marginLeft : "280px"}}
-                onClick ={()=> {dispatch(updateDictionaryFB(dictionary_index))}}/>
+                
+                {/*{dispatch(updateDictionaryFB(dictionary_list[dictionary_index]?.id))}}/> */}
                 <Word>
-                {list.word}
+                <FontAwesomeIcon icon={faCheck}/> {list.word}
                 </Word>
                 <br/>
                 <div>
@@ -50,9 +49,6 @@ const Dictionary = (props) => {
     </>
     )
 
-
-
-
 };
 
 const CardList = styled.div`
@@ -68,8 +64,7 @@ const Cards = styled.div`
 width : 300px;
 height : 150px;
 border : 2px solid black;
-
- 
+background-color : ${(props) => props.completed? "lightgray" : "white"};
 border-radius : 7%;
 margin-top : 1px;
 padding : 5px 5px 5px 5px;
