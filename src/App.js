@@ -1,13 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import {Route, Switch} from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import Dictionary from "./Dictionary";
 import Write from "./Write";
+import { loadDictionaryFB } from "./redux/modules/dictionary";
+
 
 
 
 function App() {
+  const dispatch = useDispatch();
+
+  React.useEffect(()=> {
+    dispatch(loadDictionaryFB());
+}, []);
+
 
   return (
     <div className="App">

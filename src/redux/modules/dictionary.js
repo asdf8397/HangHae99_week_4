@@ -43,7 +43,7 @@ export function isLoaded(loaded) {
 
 export const loadDictionaryFB = () => {
     return async function (dispatch) {
-        const dictionary_data = await getDocs(collection(db,"dictionary"));
+        const dictionary_data = await getDocs(collection(db, "dictionary"));
 
         let dictionary_list = [];
 
@@ -62,7 +62,7 @@ export const addDictionaryFB = (dictionary) => {
         dispatch(isLoaded(false));
         const docRef = await addDoc(collection(db,"dictionary"), dictionary);
         //const _dicitonary = await getDocs(docRef);
-        const dictionary_data = {id: docRef, ...dictionary}
+        const dictionary_data = {id: docRef.id, ...dictionary}
 
         dispatch(createDictionary(dictionary_data))
     };

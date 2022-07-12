@@ -4,22 +4,19 @@ import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCheck} from "@fortawesome/free-solid-svg-icons";
 
-import { useHistory, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { loadDictionaryFB} from "./redux/modules/dictionary";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 
 const Dictionary = (props) => {
-    const params = useParams();
+    // const params = useParams();
     // const dictionary_index = params.index;
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const history = useHistory();
     const my_Dictionary_lists = useSelector((state) => state.dictionary.list);
     // const dictionary_list = useSelector((state) => state.dictionary.list);
-    React.useEffect(()=> {
-        dispatch(loadDictionaryFB());
-    }, []);
+
 
     return (
         <> 
